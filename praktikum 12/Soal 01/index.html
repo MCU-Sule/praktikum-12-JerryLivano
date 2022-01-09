@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="Jerry Livano 2172002">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style>
+    * {
+        font-family: sans-serif;
+    }
+    form {
+        width: 30%;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    #kota {
+        width: 100%;
+        height: 30px;
+    }
+    #submit{
+        height: 27px;
+        width: 100px;
+        font-size: 12px;
+        margin-left: 78%;
+        margin-bottom: 40px;
+    }
+    #list {
+        width: 80%;
+        height: 20px;
+        margin-left: 40px;
+    }
+    .cityname {
+        font-size: 43px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 50px;
+    }
+    .country {
+        font-weight: bold;
+        font-size: 25px;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .coordinate {
+        font-weight: bold;
+        font-size: 25px;
+        text-align: center;
+    }
+</style>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>City</legend>
+            <label for="kota">Name</label>
+            <input type="text" list="kota" name="list" id="list"/>
+                <datalist id="kota">
+                    <script>
+                        function listkota (){
+                            $.getJSON('cityList.json', (result) => {
+                                for (i=0; i<result.city.length; i++){
+                                    let data = document.createElement('option');
+                                    data.value = result.city[i].name;
+                                    document.getElementById('kota').appendChild(data);
+                                }
+                            })
+                        }
+                        listkota();
+                    </script>
+                </datalist>
+            <button type="button" id="submit" onclick="clicked()">Submit Query</button>
+        </fieldset>
+    </form>
+    <div class="div cityname"></div>
+    <div class="div country"></div>
+    <div class="div coordinate"></div>
+    <script>
+        function clicked (){
+            let value = document.getElementById('list').value;
+            $.getJSON('cityList.json', (result) => {
+                for (j=0; j<result.city.length; j++){
+                    if (value == result.city[j].name){
+                        $('.cityname').html('City Name ' + result.city[j].name + ' (' + result.city[j].id + ')');
+                        $('.country').html('Country ' + result.city[j].country);
+                        $('.coordinate').html('Coordinates (lat, lon): ' + result.city[j].coord.lat + ', ' + result.city[j].coord.lon);
+                        $('.div').css('background-color', 'aquamarine');
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
